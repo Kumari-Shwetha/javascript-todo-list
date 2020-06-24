@@ -21,8 +21,9 @@ function createDiv(itemName) {
     let removeButton = document.createElement('button');
     removeButton.classList.add('removeButton');
 
-    let editicon = document.createElement('i')
-    editicon.classList.add("fas", "fa-edit");
+    /*let editicon = document.createElement('i')
+    editicon.classList.add("fas", "fa-edit");*/
+    editButton.innerText="Edit";
 
     let removeicon = document.createElement('i')
     removeicon.classList.add("fas", "fa-trash-alt");
@@ -30,21 +31,33 @@ function createDiv(itemName) {
 
     wrapper.appendChild(itemBox);
 
-    editButton.appendChild(editicon);
+    //editButton.appendChild(editicon);
     removeButton.appendChild(removeicon);
 
     itemBox.appendChild(input);
     itemBox.appendChild(editButton);
     itemBox.appendChild(removeButton);
 
-    editButton.addEventListener('click', () => this.edit(input));
+    editButton.addEventListener('click', function(e){
+        e.preventDefault();
+        edit(input,this);
+    });
 
-    removeButton.addEventListener('click', () => this.remove(itemBox));
-
+    removeButton.addEventListener('click',function(e){
+        e.preventDefault();
+        remove(itemBox);
+    });
 }
 
-function edit(input) {
+function edit(input,button) {
     input.disabled = !input.disabled;
+    if(!input.disabled){
+        input.focus();
+        button.innerText="Update";
+    }
+    else{
+        button.innerText = "Edit";
+    }
 }
 function remove(item) {
     wrapper.removeChild(item);
@@ -52,10 +65,14 @@ function remove(item) {
 
 
 function check() {
-
+    input.classList.remove('error');
     if (input.value != "") {
         item(input.value);
         input.value = "";
+    }
+    else{
+        input.classList.add('error');
+        input.focus();
     }
 }
 
